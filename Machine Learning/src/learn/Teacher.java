@@ -101,7 +101,7 @@ public class Teacher {
 			}
 
 			w2 = w1;
-			w1 = Vector.sum(w2, Vector.prod(change, g1));
+			w1 = Vector.diff(w2, Vector.prod(change, g1));
 			count++;
 			//Check if the weights are close, if we are approaching a minimum, or we have gone through too many steps.
 		} while ((Vector.rms(w1, w2) > eps || Vector.magnitude(g1) > eps) && count < 1 / eps);
