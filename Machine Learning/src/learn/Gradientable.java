@@ -11,10 +11,9 @@ public interface Gradientable extends LossFunction {
 	 * Returns the gradient of the loss function.
 	 * @param r
 	 * @param weight
-	 * @param bias
 	 * @param inputs
 	 * @param outputs
 	 * @return
 	 */
-	double[] loss_gradient(Regression r, double[] weight, double bias, double[][] inputs, double[] outputs);
+	double[] loss_gradient(Regression r, double[] weight, double[][] inputs, double[] outputs);
 }
