@@ -35,7 +35,7 @@ def teach(regression, weight_guess, inputs, outputs,
             - f(w1)) / wdiff[i] for i in range(0, len(w1))]),
           loss = lambda f, w, ins, outs :
           sum([(f(w, ins[i]) - outs[i]) ** 2 for i in range(0, len(ins))])
-          / len(ins[i]) ** 2,
+          / len(ins) ** 2,
           step = 0.001, eps = 0.00001) :
     """
 Teaches a bot with a given regression and initial weight against a set of
@@ -57,6 +57,7 @@ step(wn, w(n-1), grad(n), grad(n-1)).\n
 eps: The convergence. Will also loop until 1/eps steps have been taken, so as to
 not be looping forever.
 """
+    assert(len(inputs) == len(outputs))
     if type(weight_guess) == list :
         w1 = np.array(weight_guess)
     else :
@@ -84,3 +85,36 @@ not be looping forever.
         count += 1
     return Bot(regression, w1)
 
+#Run tests
+if __name__ == "__main__" :
+    input1 = [[0], [1], [2], [3], [4]]
+    output1 = [0, 1, 2, 3, 4]
+    output2 = [1, 3, 5, 7, 9]
+    output3 = [0]
+
+    r = lambda w, in_ : w[0] * in_[0] + w[1]
+    bot1 = Bot(r, [1, 0])
+    bot2 = Bot(r, [2, 1])
+
+    bot_test_1 = teach(r, [0, 0], input1, output1)
+    bot_test_2 = teach(r, [0, 0], input1, output2)
+    try :
+        bot_test_3 = teach(r, [0, 0], input1, output3)
+    except AssertionError :
+        pass;
+    else :
+        print("Failed")
+        s = input("Press any key to continue")
+        if s != None :
+            exit()
+
+    try :
+        assert(bot_test_1.get_weights[i] == bot1.get_weights[i] for i in range(0, 2))
+        assert(bot_test_2.get_weights[i] == bot2.get_weights[i] for i in range(0, 2))
+    except AssertionError :
+        print("Failed.")
+    else :
+        print("Succeeded")
+    s = input("Press any key to continue")
+    if s != None :
+        exit()
