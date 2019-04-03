@@ -10,6 +10,7 @@ import learn.Regression;
 import learn.Teacher;
 import learn.loss.AbsoluteLoss;
 import learn.loss.SquaredLoss;
+import learn.step.ConstantStepSize;
 
 class TeacherTest {
 	private static final double[][] input1 = { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } };
@@ -52,8 +53,8 @@ class TeacherTest {
 				public double compute_regression(double[] input, double[] weight) {
 					return (input[0] * weight[0] + weight[1]);
 				}
-			}, new double[] { 0, 0 }, AbsoluteLoss.getSingleton(), Gradient.getSingleton(), input1, output1, 0.001,
-					0.00001);
+			}, new double[] { 0, 0 }, AbsoluteLoss.getSingleton(), Gradient.getSingleton(), input1, output1,
+					new ConstantStepSize(0.001), 0.00001);
 			Bot bot_test_2 = Teacher.teach(new Regression() {
 
 				@Override
@@ -61,8 +62,8 @@ class TeacherTest {
 					return (input[0] * weight[0] + weight[1]);
 				}
 
-			}, new double[] { 0, 0 }, AbsoluteLoss.getSingleton(), Gradient.getSingleton(), input1, output2, 0.001,
-					0.00001);
+			}, new double[] { 0, 0 }, AbsoluteLoss.getSingleton(), Gradient.getSingleton(), input1, output2,
+					new ConstantStepSize(0.001), 0.00001);
 
 			Bot bot_test_3 = Teacher.teach(new Regression() {
 
@@ -70,8 +71,8 @@ class TeacherTest {
 				public double compute_regression(double[] input, double[] weight) {
 					return (input[0] * weight[0] + weight[1]);
 				}
-			}, new double[] { 0, 0 }, SquaredLoss.getSingleton(), Gradient.getSingleton(), input1, output1, 0.001,
-					0.00001);
+			}, new double[] { 0, 0 }, SquaredLoss.getSingleton(), Gradient.getSingleton(), input1, output1,
+					new ConstantStepSize(0.001), 0.00001);
 			Bot bot_test_4 = Teacher.teach(new Regression() {
 
 				@Override
@@ -79,8 +80,8 @@ class TeacherTest {
 					return (input[0] * weight[0] + weight[1]);
 				}
 
-			}, new double[] { 0, 0 }, SquaredLoss.getSingleton(), Gradient.getSingleton(), input1, output2, 0.001,
-					0.00001);
+			}, new double[] { 0, 0 }, SquaredLoss.getSingleton(), Gradient.getSingleton(), input1, output2,
+					new ConstantStepSize(0.001), 0.00001);
 
 			assertTrue(rms(bot_test_1.getWeight(), bot1.getWeight()) <= 0.1);
 			assertTrue(rms(bot_test_2.getWeight(), bot2.getWeight()) <= 0.1);
