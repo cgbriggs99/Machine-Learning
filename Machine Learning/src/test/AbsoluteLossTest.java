@@ -40,18 +40,18 @@ class AbsoluteLossTest {
 		Regression r = new Regression() {
 
 			@Override
-			public double compute_regression(double[] input, double[] weight, double bias) {
+			public double compute_regression(double[] input, double[] weight) {
 				return (input[0]);
 			}
 			
 		};
-		assertEquals(output1, AbsoluteLoss.getSingleton().loss(r, null, 0, input1a, input1b));
+		assertEquals(output1, AbsoluteLoss.getSingleton().loss(r, null, input1a, input1b));
 		
 		assertThrows(java.lang.AssertionError.class, new Executable() {
 
 			@Override
 			public void execute() throws Throwable {
-				AbsoluteLoss.getSingleton().loss(r, null, 0, input2a, input2b);
+				AbsoluteLoss.getSingleton().loss(r, null, input2a, input2b);
 				
 			}
 			

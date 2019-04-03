@@ -4,8 +4,7 @@ import learn.LossFunction;
 import learn.Regression;
 
 /**
- * Computes the loss function based on the average of the squared differences, normalized by the square of the size
- * rather than just the size.
+ * Computes the loss function based on the average of the squared differences.
  * @author connor
  *
  */
@@ -24,13 +23,13 @@ public class SquaredLoss implements LossFunction {
 	}
 
 	@Override
-	public double loss(Regression r, double[] weight, double bias, double[][] inputs, double[] outputs) {
+	public double loss(Regression r, double[] weight, double[][] inputs, double[] outputs) {
 		double sum = 0;
 		
 		assert(inputs.length == outputs.length);
 		
 		for(int i = 0; i < inputs.length; i++) {
-			double diff = r.compute_regression(inputs[i], weight, bias) - outputs[i];
+			double diff = r.compute_regression(inputs[i], weight) - outputs[i];
 			sum += (diff * diff) / (outputs.length * outputs.length);
 		}
 		return (sum);

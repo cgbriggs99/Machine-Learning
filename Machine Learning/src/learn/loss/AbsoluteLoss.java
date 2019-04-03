@@ -24,13 +24,13 @@ public class AbsoluteLoss implements LossFunction {
 	
 	
 	@Override
-	public double loss(Regression r, double[] weight, double bias, double[][] inputs, double[] outputs) {
+	public double loss(Regression r, double[] weight, double[][] inputs, double[] outputs) {
 		double sum = 0;
 		
 		assert(inputs.length == outputs.length);
 		
 		for(int i = 0; i < inputs.length; i++) {
-			sum += Math.abs(r.compute_regression(inputs[i], weight, bias) - outputs[i]) / inputs.length;
+			sum += Math.abs(r.compute_regression(inputs[i], weight) - outputs[i]) / inputs.length;
 		}
 		return (sum);
 	}
