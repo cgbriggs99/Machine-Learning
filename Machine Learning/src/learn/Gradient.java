@@ -40,7 +40,7 @@ public class Gradient {
 		for (int i = 0; i < weight.length; i++) {
 			double[] change = weight.clone();
 			change[i] += dweight[i];
-			out[i] = (loss.loss(r, weight, input, output) - loss.loss(r, change, input, output)) / dweight[i];
+			out[i] = (loss.loss(r, change, input, output) - loss.loss(r, weight, input, output)) / dweight[i];
 		}
 		return (out);
 	}
