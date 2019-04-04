@@ -10,7 +10,7 @@ import learn.Gradient;
 import learn.Regression;
 import learn.Teacher;
 import learn.loss.SquaredLoss;
-import learn.step.ConstantStepSize;
+import learn.step.VariableStepSize;
 
 public class PolynomialRegression {
 	private static class Pair<T1, T2> {
@@ -92,6 +92,7 @@ public class PolynomialRegression {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {
+		long start = System.nanoTime();
 		Scanner sc;
 		if (args.length == 1) {
 			sc = new Scanner(new FileInputStream(args[0]));
@@ -138,7 +139,7 @@ public class PolynomialRegression {
 			}
 
 		}, new double[choose(vars + 4, 3)], SquaredLoss.getSingleton(), Gradient.getSingleton(), inputs, outputs,
-				new ConstantStepSize(0.01), 0.00001);
+				new VariableStepSize(), 0.006);
 		
 		int checks = sc.nextInt();
 		for(int i = 0; i < checks; i++) {
@@ -150,6 +151,8 @@ public class PolynomialRegression {
 		}
 
 		sc.close();
+		long end = System.nanoTime();
+		System.out.println("Took: " + (end - start) / 1000000000.0 + "s.");
 	}
 
 }
