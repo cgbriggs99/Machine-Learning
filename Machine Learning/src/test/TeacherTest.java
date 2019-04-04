@@ -11,6 +11,7 @@ import learn.Teacher;
 import learn.loss.AbsoluteLoss;
 import learn.loss.SquaredLoss;
 import learn.step.ConstantStepSize;
+import learn.step.VariableStepSize;
 
 class TeacherTest {
 	private static final double[][] input1 = { { 0 }, { 1 }, { 2 }, { 3 }, { 4 } };
@@ -46,7 +47,7 @@ class TeacherTest {
 				return (input[0] * weight[0] + weight[1]);
 			}
 		}, new double[] { 2, 1 });
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			Bot bot_test_1 = Teacher.teach(new Regression() {
 
 				@Override
@@ -54,7 +55,7 @@ class TeacherTest {
 					return (input[0] * weight[0] + weight[1]);
 				}
 			}, new double[] { 0, 0 }, AbsoluteLoss.getSingleton(), Gradient.getSingleton(), input1, output1,
-					new ConstantStepSize(0.001), 0.00001);
+					new ConstantStepSize(0.01), 0.001);
 			Bot bot_test_2 = Teacher.teach(new Regression() {
 
 				@Override
@@ -63,8 +64,7 @@ class TeacherTest {
 				}
 
 			}, new double[] { 0, 0 }, AbsoluteLoss.getSingleton(), Gradient.getSingleton(), input1, output2,
-					new ConstantStepSize(0.001), 0.00001);
-
+					new ConstantStepSize(0.01), 0.001);
 			Bot bot_test_3 = Teacher.teach(new Regression() {
 
 				@Override
@@ -72,7 +72,7 @@ class TeacherTest {
 					return (input[0] * weight[0] + weight[1]);
 				}
 			}, new double[] { 0, 0 }, SquaredLoss.getSingleton(), Gradient.getSingleton(), input1, output1,
-					new ConstantStepSize(0.001), 0.00001);
+					new VariableStepSize(), 0.001);
 			Bot bot_test_4 = Teacher.teach(new Regression() {
 
 				@Override
@@ -81,8 +81,7 @@ class TeacherTest {
 				}
 
 			}, new double[] { 0, 0 }, SquaredLoss.getSingleton(), Gradient.getSingleton(), input1, output2,
-					new ConstantStepSize(0.001), 0.00001);
-
+					new VariableStepSize(), 0.001);
 			assertTrue(rms(bot_test_1.getWeight(), bot1.getWeight()) <= 0.1);
 			assertTrue(rms(bot_test_2.getWeight(), bot2.getWeight()) <= 0.1);
 			assertTrue(rms(bot_test_3.getWeight(), bot1.getWeight()) <= 0.1);
