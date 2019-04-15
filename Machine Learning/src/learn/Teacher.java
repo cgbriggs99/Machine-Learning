@@ -43,6 +43,12 @@ public class Teacher {
 				g1 = grad.grad(r, loss, w1, Vector.diff(w1, w2), input, output);
 				for(double g : g1) {
 					if(!Double.isFinite(g)) {
+						//This is because, as we approach the minimum, there is more likely to be a zero in the
+						//denominator of the gradient expression. In that case, we are probably close enough to 
+						//the answer.
+						if(Vector.magnitude(g2) < 10 * eps || Vector.rms(w1, w2) < 10 * eps) {
+							return (new Bot(r, w1));
+						}
 						throw(new java.lang.ArithmeticException());
 					}
 				}

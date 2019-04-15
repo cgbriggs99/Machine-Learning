@@ -22,17 +22,45 @@ public class AbsoluteLoss implements LossFunction {
 		return (singleton);
 	}
 	
-	
+	private volatile double[] sum;
 	@Override
 	public double loss(Regression r, double[] weight, double[][] inputs, double[] outputs) {
-		double sum = 0;
 		
 		assert(inputs.length == outputs.length);
-		
-		for(int i = 0; i < inputs.length; i++) {
-			sum += Math.abs(r.compute_regression(inputs[i], weight) - outputs[i]) / inputs.length;
+		Runtime runtime = Runtime.getRuntime();
+		final int cores = runtime.availableProcessors() - 1;
+		sum = new double[cores];
+		Thread[] ts = new Thread[cores];
+		for(int i = 0; i < ts.length; i++) {
+			final int blocking = i;
+			ts[i] = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					sum[blocking] = 0;
+					for(int i = blocking; i < inputs.length; i += cores) {
+						sum[blocking] += Math.abs(r.compute_regression(inputs[i], weight) - outputs[i]);
+					}
+				}
+				
+			});
+			ts[i].start();
 		}
-		return (sum);
+		
+		for(int i = 0; i < ts.length; i++) {
+			try {
+				ts[i].join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		double outsum = 0;
+		for(double d : sum) {
+			outsum += d;
+		}
+		
+		return (outsum / inputs.length);
 	}
 
 }
